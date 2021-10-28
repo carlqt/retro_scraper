@@ -15,13 +15,21 @@ func main() {
 	// page.MustWaitLoad().MustScreenshot("a.png")
 
 	page := rod.New().MustConnect().MustPage("https://easyretro.io/publicboard/d0LnKN92OGdwxnFNhJt7Pow4T2b2/817d0a10-07ef-4408-bfb0-cd2e28c961c0")
-	page.MustWaitElementsMoreThan(".column-header", 1)
+	page.MustWaitElementsMoreThan(".easy-card-list", 0)
 
-	headers := page.MustWaitLoad().MustElements(".column-header")
+	columns := page.MustWaitLoad().MustElements(".easy-card-list")
 
-	for _, header := range headers {
-		value := header.MustElement("h2.no-edit").MustText()
+	for _, column := range columns {
+		header := column.MustElement("h2.no-edit").MustText()
 
-		fmt.Println(value)
+		fmt.Println(header)
+
+		contents := column.MustElements("ul.column > li")
+
+		// Listing out the column's contents
+		for _, content := range contents {
+			text := content.MustElement(".easy-board-front .easy-card-main-content .text").MustText()
+			fmt.Println(text)
+		}
 	}
 }
