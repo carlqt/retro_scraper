@@ -88,7 +88,10 @@ func convertToCsvInput(columns []Column) [][]string {
 }
 
 func main() {
-	page := rod.New().MustConnect().MustPage("https://easyretro.io/publicboard/d0LnKN92OGdwxnFNhJt7Pow4T2b2/817d0a10-07ef-4408-bfb0-cd2e28c961c0")
+	// Test URL - https://easyretro.io/publicboard/d0LnKN92OGdwxnFNhJt7Pow4T2b2/817d0a10-07ef-4408-bfb0-cd2e28c961c0"
+	argsURL := os.Args[1]
+
+	page := rod.New().MustConnect().MustPage(argsURL)
 	page.MustWaitElementsMoreThan(".easy-card-list", 0)
 
 	columns := NewColumns(page)
