@@ -41,7 +41,8 @@ func exportToCSV(columns []Column) {
 	inputs := convertToCsvInput(columns)
 
 	// maybe add timestamp
-	file, err := os.Create("easyretro.csv")
+	os.MkdirAll("output", os.ModePerm)
+	file, err := os.Create("output/easyretro.csv")
 
 	if err != nil {
 		panic(err)
