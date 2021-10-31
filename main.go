@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"log"
 	"os"
 
 	"github.com/go-rod/rod"
@@ -47,13 +48,13 @@ func NewBoard(easyRetroColumns []Column) Board {
 	return board
 }
 
-func (board *Board) ExportToCSV() {
+func (board *Board) ExportToCSV() error {
 	// maybe add timestamp
 	os.MkdirAll("output", os.ModePerm)
 	file, err := os.Create("output/easyretro.csv")
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	defer file.Close()
@@ -62,8 +63,11 @@ func (board *Board) ExportToCSV() {
 	defer writer.Flush()
 
 	for _, input := range board.Cells {
-		_ = writer.Write(input)
+		err = writer.Write(input)
+		return err
 	}
+
+	return nil
 }
 
 func NewColumns(driver *rod.Page) []Column {
@@ -99,5 +103,11 @@ func main() {
 	easyRetroColumns := NewColumns(page)
 	board := NewBoard(easyRetroColumns)
 
-	board.ExportToCSV()
+	err := board.ExportToCSV()
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println("Done")
 }
