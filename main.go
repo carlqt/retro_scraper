@@ -64,7 +64,10 @@ func (board *Board) ExportToCSV() error {
 
 	for _, input := range board.Cells {
 		err = writer.Write(input)
-		return err
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
